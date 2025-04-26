@@ -2,40 +2,46 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import PageLayout from "./PageLayout";
 import React, { useContext, useState } from 'react';
-import TaskContext from '../context/TasksContext';
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import TaskContext from '../context/TasksContext.tsx';
+import { Row } from "react-bootstrap";
 
 
-type TaskCategory = {
+type toDoList = {
     id: number;
-    taskCategory: string;
+    task: string;
   }
 
   const ProfilePage: React.FC = () =>{
-    const { user, isAuthenticated } = useAuth0();
-    const [categories, setCategories] = useState<TaskCategory[]>([]);
-    const [newCategory, setNewCategory] = useState<string>('');
-    const { setTasks } = useContext(TaskContext);
+    const {user, isAuthenticated } = useAuth0();
+    const [tasks, setTasks] = useState<toDoList[]>([]);
+    const [newTask, setNewTask] = useState<string>('');
+    const { setTaskList } = useContext(TaskContext);
 
-    
-      const addTaskCategory = (): void => {
-        if (newCategory.trim() !== '') {
-          const newTaskCategory: TaskCategory = {
+      const addTask = (): void => {
+        if (newTask.trim() !== '') {
+          const newTodo: toDoList = {
             id: Date.now(),
-            taskCategory: newCategory,
+            task: newTask,
           };
     
-          setCategories([...categories, newTaskCategory]);
-          setNewCategory('');
-          setTasks({ TaskList: "test" });
+          setTasks([...tasks, newTodo]);
+          setNewTask('');
+          try {
+            console.log(tasks[0].task);
+          } catch (error) {
+            console.error('Something went wrong:', error);
+          }
+
+          
+          setTaskList({TaskList: "test"})
         }
         
       };
 
       
     
-      const deleteTaskCategory = (id: number): void => {
-        setCategories((prevCategories) => prevCategories.filter((namedCategory) => namedCategory.id !== id));
+      const deleteTask = (id: number): void => {
+        setTasks((prevTasks) => prevTasks.filter((namedTask) => namedTask.id !== id));
       };
 
     if(!isAuthenticated){
@@ -55,22 +61,22 @@ type TaskCategory = {
                 <div>
                  <div className='d-flex todo-list'>
                   <Row>
-                    <h2 className='title'>Task Categories:</h2>      
-                        {categories.map((namedCategory) => (
-                        <div key={namedCategory.id}>
-                            {namedCategory.taskCategory}
-                            <button onClick={() => deleteTaskCategory(namedCategory.id)}>🗑️</button>
+                    <h2 className='title'>Task List:</h2>      
+                        {tasks.map((namedTask) => (
+                        <div key={namedTask.id}>
+                            {namedTask.task}
+                            <button onClick={() => deleteTask(namedTask.id)}>🗑️</button>
                         </div>
                         ))}
                     </Row>
                     <div className="input-group">
                         <input
                         type="text"
-                        value={newCategory}
-                        onChange={(e) => setNewCategory(e.target.value)}
+                        value={newTask}
+                        onChange={(e) => setNewTask(e.target.value)}
                         className="form-control me-2"
                         />
-                        <button onClick={addTaskCategory} className="btn btn-primary">Add Task Category</button>
+                        <button onClick={addTask} className="btn btn-primary">Add Task</button>
                     </div>
                     </div>
                 </div>
