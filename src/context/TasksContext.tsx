@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { createContext, useState, ReactNode } from 'react';
+import { toDoList } from '../components/types';
 
 type TaskContextType = {
-List: { TaskList: string  };
-setTaskList: React.Dispatch<React.SetStateAction<{ TaskList: string }>>;
+  List: { TaskList: toDoList[] };
+  setTaskList: React.Dispatch<React.SetStateAction<{ TaskList: toDoList[] }>>;
 };
 
-
-const TaskContext = React.createContext<TaskContextType>({
-List: { TaskList: '' },
-setTaskList: () => {},
+export const TaskContext = createContext<TaskContextType>({
+  List: { TaskList: [] },
+  setTaskList: () => {},
 });
 
-export default TaskContext;
+interface TaskProviderProps {
+  children: ReactNode;
+}
+
+export const TaskProvider: React.FC<TaskProviderProps> = ({ children }) => {
+  const [taskList, setTaskList] = useState<{ TaskList: toDoList[] }>({ TaskList: [] });
+
+  return (
+    <TaskContext.Provider value={{ List: taskList, setTaskList }}>
+      {children}
+    </TaskContext.Provider>
+  );
+};

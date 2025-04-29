@@ -6,8 +6,8 @@ const ProtectedPage: React.FC = () => {
 
   return (
     <div>
-      <NavBar></NavBar>
-      <TodoList></TodoList>
+      <NavBar />
+      <TodoList />
     </div>
     
   );

@@ -1,5 +1,6 @@
 //NavBar.tsx
 import { Nav, Navbar } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 
@@ -9,11 +10,11 @@ const NavBar: React.FC = () => {
   return (
     <Navbar>
       <Nav>
-        <Nav.Link href="/">Dashboard |</Nav.Link>
+        <Link to="/">Dashboard |</Link>
         {isAuthenticated &&
             <>
-                <Nav.Link href="/profile"> Task Manager |</Nav.Link>
-                <Nav.Link href="/protected"> To-Do Lists</Nav.Link>
+                <Link to="/profile"> Task Manager |</Link>
+                <Link to="/protected"> To-Do Lists</Link>
             </>
         }
       </Nav>
