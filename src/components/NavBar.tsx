@@ -12,8 +12,8 @@ const NavBar: React.FC = () => {
         <Nav.Link href="/">Dashboard |</Nav.Link>
         {isAuthenticated &&
             <>
-                <Nav.Link href="/profile"> Task Manager |</Nav.Link>
-                <Nav.Link href="/protected"> To-Do Lists</Nav.Link>
+                <Nav.Link href="/profile"> Task List |</Nav.Link>
+                <Nav.Link href="/protected"> Task Manager |</Nav.Link>
             </>
         }
       </Nav>

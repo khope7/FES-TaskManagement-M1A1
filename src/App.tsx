@@ -40,29 +40,43 @@ import CallbackPage from "./components/CallbackPage";
 import { useAuth0 } from "@auth0/auth0-react";
 import ProfilePage from "./components/ProfilePage";
 import AuthenticationGuard from "./components/AuthenticationGuard";
-
+import ItemComponent from './components/ItemComponent';
+import TaskContext from "./context/TasksContext";
+import { useState } from "react";
+import { toDoList } from "./types/types";
 
   
 const App: React.FC = () => {
+  const {id, setTaskList} = useState<toDoList[]>([]);
+
+  setTaskList(toDoList[]);
 
   const {isLoading} = useAuth0();
   
   if(isLoading) return (<div>Loading...</div>)
 
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route
-        path="/profile"
-        element={<AuthenticationGuard component={ProfilePage} />}
-      />
-      <Route 
-        path="/protected"
-        element={<AuthenticationGuard component={ProtectedPage} />}
-      />
-      <Route path="/callback" element={<CallbackPage />} />
-    </Routes>
-    
+    <TaskContext.Provider value = {{id, setTaskList}}>
+      <Routes>
+        <Route
+          path="/"
+          element={<AuthenticationGuard component={HomePage} />}
+          />
+        <Route
+          path="/profile"
+          element={<AuthenticationGuard component={ProfilePage} />}
+        />
+        <Route 
+          path="/protected"
+          element={<AuthenticationGuard component={ProtectedPage} />}
+        />
+        <Route 
+          path="/items"
+          element={<AuthenticationGuard component={ItemComponent} />}
+        />
+        <Route path="/callback" element={<CallbackPage />} />
+      </Routes>
+    </TaskContext.Provider>
   );
 };
 

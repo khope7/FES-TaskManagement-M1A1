@@ -4,12 +4,7 @@ import PageLayout from "./PageLayout";
 import React, { useContext, useState } from 'react';
 import TaskContext from '../context/TasksContext.tsx';
 import { Row } from "react-bootstrap";
-
-
-type toDoList = {
-    id: number;
-    task: string;
-  }
+import { toDoList } from "../types/types.ts";
 
   const ProfilePage: React.FC = () =>{
     const {user, isAuthenticated } = useAuth0();
@@ -27,13 +22,13 @@ type toDoList = {
           setTasks([...tasks, newTodo]);
           setNewTask('');
           try {
-            console.log(tasks[0].task);
+            console.log(newTask);
           } catch (error) {
             console.error('Something went wrong:', error);
           }
-
           
-          setTaskList({TaskList: "test"})
+          console.log(...tasks, newTodo)
+          setTaskList(tasks)
         }
         
       };

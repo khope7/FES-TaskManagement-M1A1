@@ -5,13 +5,15 @@ import { Container } from "react-bootstrap";
 const TodoList: React.FC = () => {
   const { List } = useContext(TaskContext)
 
-  console.log(List.TaskList)
+  console.log(List)
 
   return(
     <div>
       <Container className="mt-5">
-        <h1>Task-List:</h1>
-        <h1>{List.TaskList}</h1>
+        <h1>Manage Tasks:</h1>
+        {List.map((toDo) => (
+          <h1>{toDo.task}</h1>
+        ))}
       </Container>
     </div>
   )

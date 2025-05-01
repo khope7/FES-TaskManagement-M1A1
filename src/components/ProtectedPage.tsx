@@ -9,8 +9,7 @@ const ProtectedPage: React.FC = () => {
       <NavBar></NavBar>
       <TodoList></TodoList>
     </div>
-    
+
   );
 };
-
 export default ProtectedPage;

@@ -1,14 +1,16 @@
 import React from 'react';
+import { toDoList } from '../types/types';
+import { createContext, useContext } from 'react';
 
 type TaskContextType = {
-List: { TaskList: string  };
-setTaskList: React.Dispatch<React.SetStateAction<{ TaskList: string }>>;
+List: toDoList[];
+setTaskList: React.Dispatch<React.SetStateAction<toDoList[]>>;
 };
 
-
-const TaskContext = React.createContext<TaskContextType>({
-List: { TaskList: '' },
+const TaskContext = createContext<TaskContextType>({
+List: [],
 setTaskList: () => {},
 });
+
 
 export default TaskContext;
