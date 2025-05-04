@@ -11,16 +11,20 @@ import { toDoList } from "../types/types.ts";
   const ProfilePage: React.FC = () =>{
     const {user, isAuthenticated } = useAuth0();
     const [newTask, setNewTask] = useState<string>('');
+    const [newTaskDesc, setNewTaskDesc] = useState<string>('');
     const { List, setList } = useContext(TaskContext);
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editedTask, setEditedTask] = useState<string>('');
+    const [editingDescId, setEditingDescId] = useState<number | null>(null);
+    const [editedDesc, setEditedDesc] = useState<string>('');
 
       const addTask = (): void => {
         if (newTask.trim() !== '') {
           const newTodo: toDoList = {
             id: Date.now(),
             task: newTask,
-            completed: false
+            completed: false,
+            description: newTaskDesc,
           };
     
           setList([...List, newTodo]);
@@ -35,19 +39,23 @@ import { toDoList } from "../types/types.ts";
       const startEditing = (List): void => {
         setEditingId(List.id);
         setEditedTask(List.task);
+        setEditedDesc(List.description);
         };
 
-        const cancelEditing = (): void => {  
+      const cancelEditing = (): void => {  
           setEditingId(null);  
           setEditedTask('');  
+        };
+
+        const cancelDescEditing = (): void => {  
+          setEditingDescId(null);  
+          setEditedDesc('');  
         };
 
         const toggleTodo = (id: number): void => {
           setList((prevTodos) =>
             prevTodos.map((todo) =>
-              todo.id === id ? { ...todo, completed: !todo.completed } : todo
-            )
-          );
+              todo.id === id ? { ...todo, completed: !todo.completed } : todo ));
         };
         
         const saveEdit = (id: number): void => {  
@@ -55,11 +63,11 @@ import { toDoList } from "../types/types.ts";
         
           setList(prevTodos =>  
             prevTodos.map(todo =>  
-              todo.id === id ? { ...todo, task: editedTask } : todo  
-            )  
+              todo.id === id ? { ...todo, task: editedTask, description: editedDesc } : todo
+            )
           );  
-          cancelEditing();  
-        };  
+          cancelDescEditing();  
+        };
 
     if(!isAuthenticated){
         return <div>Not authenticated</div>
@@ -95,13 +103,20 @@ import { toDoList } from "../types/types.ts";
                               value={editedTask}  
                               onChange={e => setEditedTask(e.target.value)}  
                               className='form-control me-2'  
-                            />  
+                            />
+                            <input  
+                              type='text'  
+                              value={editedDesc}  
+                              onChange={e => setEditedDesc(e.target.value)}  
+                              className='form-control me-2'
+                            />    
                             <button  
-                              onClick={() => saveEdit(todo.id)}  
+                              onClick={() => saveEdit(todo.id)}
                               className='btn btn-success btn-sm me-2'  
                             >  
                               Save  
-                            </button>  
+                            </button>
+   
                             <button  
                               onClick={cancelEditing}  
                               className='btn btn-secondary btn-sm'  
@@ -116,31 +131,39 @@ import { toDoList } from "../types/types.ts";
                                 textDecoration: todo.completed ? 'line-through' : 'none',  
                               }}  
                               className='flex-grow-1'  
-                            >  
-                              {todo.task}  
+                            > 
+                            <h4>Task: {todo.task}</h4>
+                            <h4>Description: {todo.description}</h4>  
                             </span>  
                             <button  
                               onClick={() => startEditing(todo)}  
                               className='btn btn-outline-primary btn-sm me-2'  
                             >  
                               Edit  
-                            </button>  
+                            </button>
                             <button  
                               onClick={() => deleteTask(todo.id)}  
                               className='btn btn-danger btn-sm'  
                             >  
                               🗑️  
-                            </button>  
+                            </button>
                           </>  
                         )}  
                       </div>  
                     ))}
-                    </Row>
+                  </Row>
                     <div className="input-group">
+                        Task: 
                         <input
                         type="text"
                         value={newTask}
                         onChange={(e) => setNewTask(e.target.value)}
+                        className="form-control me-2"
+                        /> Task Description: 
+                        <input
+                        type="note"
+                        value={newTaskDesc}
+                        onChange={(e) => setNewTaskDesc(e.target.value)}
                         className="form-control me-2"
                         />
                         <button onClick={addTask} className="btn btn-primary">Add Task</button>

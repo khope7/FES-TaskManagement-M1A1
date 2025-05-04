@@ -4,5 +4,6 @@ export type toDoList = {
     id: number;
     task: string;
     completed: boolean;
+    description: string;
   }
 

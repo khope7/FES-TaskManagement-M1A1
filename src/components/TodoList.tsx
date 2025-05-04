@@ -14,7 +14,9 @@ const TodoList: React.FC = () => {
       <Container className="mt-5">
         <h1>Manage Tasks:</h1>
         {List.map((toDo) => (
-          <h1>{toDo.task}</h1>
+          <h1>Task: {toDo.task}
+          <br />Description: {toDo.description}</h1>
+
         ))}
       </Container>
     </div>
