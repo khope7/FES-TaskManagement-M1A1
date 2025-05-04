@@ -15,7 +15,6 @@ import { toDoList } from "../types/types.ts";
     const { List, setList } = useContext(TaskContext);
     const [editingId, setEditingId] = useState<number | null>(null);
     const [editedTask, setEditedTask] = useState<string>('');
-    const [editingDescId, setEditingDescId] = useState<number | null>(null);
     const [editedDesc, setEditedDesc] = useState<string>('');
 
       const addTask = (): void => {
@@ -47,11 +46,6 @@ import { toDoList } from "../types/types.ts";
           setEditedTask('');  
         };
 
-        const cancelDescEditing = (): void => {  
-          setEditingDescId(null);  
-          setEditedDesc('');  
-        };
-
         const toggleTodo = (id: number): void => {
           setList((prevTodos) =>
             prevTodos.map((todo) =>
@@ -66,7 +60,7 @@ import { toDoList } from "../types/types.ts";
               todo.id === id ? { ...todo, task: editedTask, description: editedDesc } : todo
             )
           );  
-          cancelDescEditing();  
+          cancelEditing();  
         };
 
     if(!isAuthenticated){
