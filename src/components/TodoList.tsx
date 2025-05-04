@@ -2,6 +2,8 @@ import React, {useContext } from "react";
 import TaskContext from "../context/TasksContext";
 import { Container } from "react-bootstrap";
 
+
+// Creating official List using data from List within Context API
 const TodoList: React.FC = () => {
   const { List } = useContext(TaskContext)
 

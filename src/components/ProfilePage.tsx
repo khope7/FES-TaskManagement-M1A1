@@ -6,38 +6,60 @@ import TaskContext from '../context/TasksContext.tsx';
 import { Row } from "react-bootstrap";
 import { toDoList } from "../types/types.ts";
 
+
+// Initalizing task list using addTask function along with delete, toggle, and edit functions and storing to Context API
   const ProfilePage: React.FC = () =>{
     const {user, isAuthenticated } = useAuth0();
-    const [tasks, setTasks] = useState<toDoList[]>([]);
     const [newTask, setNewTask] = useState<string>('');
-    const { setTaskList } = useContext(TaskContext);
+    const { List, setList } = useContext(TaskContext);
+    const [editingId, setEditingId] = useState<number | null>(null);
+    const [editedTask, setEditedTask] = useState<string>('');
 
       const addTask = (): void => {
         if (newTask.trim() !== '') {
           const newTodo: toDoList = {
             id: Date.now(),
             task: newTask,
+            completed: false
           };
     
-          setTasks([...tasks, newTodo]);
+          setList([...List, newTodo]);
           setNewTask('');
-          try {
-            console.log(newTask);
-          } catch (error) {
-            console.error('Something went wrong:', error);
-          }
-          
-          console.log(...tasks, newTodo)
-          setTaskList(tasks)
-        }
-        
       };
-
-      
+    }
     
       const deleteTask = (id: number): void => {
-        setTasks((prevTasks) => prevTasks.filter((namedTask) => namedTask.id !== id));
+        setList(List.filter((task) => task.id !== id));
       };
+
+      const startEditing = (List): void => {
+        setEditingId(List.id);
+        setEditedTask(List.task);
+        };
+
+        const cancelEditing = (): void => {  
+          setEditingId(null);  
+          setEditedTask('');  
+        };
+
+        const toggleTodo = (id: number): void => {
+          setList((prevTodos) =>
+            prevTodos.map((todo) =>
+              todo.id === id ? { ...todo, completed: !todo.completed } : todo
+            )
+          );
+        };
+        
+        const saveEdit = (id: number): void => {  
+          if (editedTask.trim() === '') return;
+        
+          setList(prevTodos =>  
+            prevTodos.map(todo =>  
+              todo.id === id ? { ...todo, task: editedTask } : todo  
+            )  
+          );  
+          cancelEditing();  
+        };  
 
     if(!isAuthenticated){
         return <div>Not authenticated</div>
@@ -57,12 +79,62 @@ import { toDoList } from "../types/types.ts";
                  <div className='d-flex todo-list'>
                   <Row>
                     <h2 className='title'>Task List:</h2>      
-                        {tasks.map((namedTask) => (
-                        <div key={namedTask.id}>
-                            {namedTask.task}
-                            <button onClick={() => deleteTask(namedTask.id)}>🗑️</button>
-                        </div>
-                        ))}
+                    {List.map(todo => (  
+                      <div key={todo.id} className='d-flex align-items-center mb-2'>  
+                        <input  
+                          type='checkbox'  
+                          checked={todo.completed}  
+                          onChange={() => toggleTodo(todo.id)}  
+                          className='me-2'  
+                        />
+                
+                        {editingId === todo.id ? (  
+                          <>  
+                            <input  
+                              type='text'  
+                              value={editedTask}  
+                              onChange={e => setEditedTask(e.target.value)}  
+                              className='form-control me-2'  
+                            />  
+                            <button  
+                              onClick={() => saveEdit(todo.id)}  
+                              className='btn btn-success btn-sm me-2'  
+                            >  
+                              Save  
+                            </button>  
+                            <button  
+                              onClick={cancelEditing}  
+                              className='btn btn-secondary btn-sm'  
+                            >  
+                              Cancel  
+                            </button>  
+                          </>  
+                        ) : (  
+                          <>  
+                            <span  
+                              style={{  
+                                textDecoration: todo.completed ? 'line-through' : 'none',  
+                              }}  
+                              className='flex-grow-1'  
+                            >  
+                              {todo.task}  
+                            </span>  
+                            <button  
+                              onClick={() => startEditing(todo)}  
+                              className='btn btn-outline-primary btn-sm me-2'  
+                            >  
+                              Edit  
+                            </button>  
+                            <button  
+                              onClick={() => deleteTask(todo.id)}  
+                              className='btn btn-danger btn-sm'  
+                            >  
+                              🗑️  
+                            </button>  
+                          </>  
+                        )}  
+                      </div>  
+                    ))}
                     </Row>
                     <div className="input-group">
                         <input

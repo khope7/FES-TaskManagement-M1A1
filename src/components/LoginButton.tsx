@@ -1,8 +1,9 @@
-// LoginButton.tsx
 import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "react-bootstrap";
 import React from "react";
 
+
+// Setting log in button for user authentication
 const LoginButton: React.FC = () => {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
 

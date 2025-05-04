@@ -1,10 +1,9 @@
-//CallbackPage.tsx
 import { useAuth0 } from "@auth0/auth0-react";
 import PageLayout from "./PageLayout.tsx";
 import React from "react";
 
+//Callback page for incorrect user entry
 const CallbackPage: React.FC = () => {
-
     const { error } = useAuth0();
 
     if (error) {

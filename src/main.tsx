@@ -6,7 +6,7 @@ import Auth0ProviderWithNavigate from "./components/AUth0Provider";
 import React from "react";
 
 
-
+// Sending App an Browser Router to run dev
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );

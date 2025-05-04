@@ -30,7 +30,6 @@ Maintain a detailed README.md file in the repository, providing clear instructio
 Include documentation on project features, architecture, and implementation details.
 */
 
-//App.tsx
 import React from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
@@ -42,21 +41,27 @@ import ProfilePage from "./components/ProfilePage";
 import AuthenticationGuard from "./components/AuthenticationGuard";
 import ItemComponent from './components/ItemComponent';
 import TaskContext from "./context/TasksContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toDoList } from "./types/types";
 
-  
-const App: React.FC = () => {
-  const {id, setTaskList} = useState<toDoList[]>([]);
 
-  setTaskList(toDoList[]);
+// Creating App to hold component routing
+const App: React.FC = () => {
+  const [ List, setList ] = useState <toDoList[]>(() =>{
+    const stored = sessionStorage.getItem("taskList")
+    return stored ? JSON.parse(stored):[]
+  });
+
+  useEffect(() => {
+    sessionStorage.setItem("taskList", JSON.stringify(List))
+  }, [List]);
 
   const {isLoading} = useAuth0();
   
   if(isLoading) return (<div>Loading...</div>)
 
   return (
-    <TaskContext.Provider value = {{id, setTaskList}}>
+    <TaskContext.Provider value = {{List, setList}}>
       <Routes>
         <Route
           path="/"

@@ -1,45 +1,48 @@
-// ItemComponent.tsx
+import React, { useContext, useState } from 'react';
+import TaskContext from '../context/TasksContext';
+import { toDoList } from '../types/types';
+import PageLayout from './PageLayout';
 
-import React, { useReducer, useState } from 'react';
-import itemReducer from './ItemReducer';
-import Item from './Item';
 
+//Setting add and remove functions on Item page using List from Context API
 const ItemComponent: React.FC = () => {
-  const [state, dispatch] = useReducer(itemReducer, { items: [] });
+  const {List, setList} = useContext(TaskContext)
   const [itemName, setItemName] = useState('');
 
   const addItem = (e: React.FormEvent) => {
     e.preventDefault();
-    const newItem: Item = { id: Date.now(), name: itemName };
-    dispatch({ type: 'ADD_ITEM', payload: newItem });
-    console.log(newItem)
+    const newItem: toDoList = { id: Date.now(), task: itemName, completed: false };
+    setList([...List, newItem])
     setItemName('');
   };
 
   const removeItem = (itemId: number) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: itemId });
+    setList(List.filter((item) => item.id != itemId))
   };
 
   return (
-    <div>
-      <form onSubmit={addItem}>
-        <input
-          type="text"
-          value={itemName}
-          onChange={(e) => setItemName(e.target.value)}
-          placeholder="Enter item name"
-        />
-        <button type="submit">Add Item</button>
-      </form>
-      
-      {state.items.map((item) => (
-        <div key={item.id}>
-          {item.name}{' '}
-          <button onClick={() => removeItem(item.id)}>Remove</button>
-        </div>
-      ))}
-      
-    </div>
+    <PageLayout>
+      <div>
+        <h1>Item List</h1>
+        <form onSubmit={addItem}>
+          <input
+            type="text"
+            value={itemName}
+            onChange={(e) => setItemName(e.target.value)}
+            placeholder="Enter item name"
+          />
+          <button type="submit">Add Item</button>
+        </form>
+        
+        {List.map((item) => (
+          <div key={item.id}>
+            {item.task}{' '}
+            <button onClick={() => removeItem(item.id)}>Remove</button>
+          </div>
+        ))}
+        
+      </div>
+    </PageLayout>
   );
 };
 

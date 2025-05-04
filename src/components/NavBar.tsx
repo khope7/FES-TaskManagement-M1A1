@@ -3,6 +3,7 @@ import { Nav, Navbar } from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
 import React from "react";
 
+// Creating Navbar elements for website navigation
 const NavBar: React.FC = () => {
     const { isAuthenticated } = useAuth0();
 
@@ -14,6 +15,7 @@ const NavBar: React.FC = () => {
             <>
                 <Nav.Link href="/profile"> Task List |</Nav.Link>
                 <Nav.Link href="/protected"> Task Manager |</Nav.Link>
+                <Nav.Link href="/items"> Items |</Nav.Link>
             </>
         }
       </Nav>

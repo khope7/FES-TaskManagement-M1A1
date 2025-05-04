@@ -4,6 +4,7 @@ import NavBar from "./Navbar";
 import NavBarButtons from "./NavbarButtons";
 import React from "react";
 
+// Creating global page layout default settings using props
 type PageLayoutProps = {
   children?: React.ReactNode;
 };

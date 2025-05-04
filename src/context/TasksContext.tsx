@@ -1,15 +1,16 @@
 import React from 'react';
 import { toDoList } from '../types/types';
-import { createContext, useContext } from 'react';
+import { createContext } from 'react';
 
+// Creating Context API and assigning data from Profile page as attributes
 type TaskContextType = {
 List: toDoList[];
-setTaskList: React.Dispatch<React.SetStateAction<toDoList[]>>;
+setList: React.Dispatch<React.SetStateAction<toDoList[]>>;
 };
 
 const TaskContext = createContext<TaskContextType>({
 List: [],
-setTaskList: () => {},
+setList: () => {},
 });
 
 

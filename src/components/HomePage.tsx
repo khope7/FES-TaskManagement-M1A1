@@ -1,4 +1,3 @@
-//Home-page.tsx
 import { Col, Container } from "react-bootstrap";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "./LoginButton";
@@ -6,6 +5,7 @@ import LogoutButton from "./LogoutButton";
 import NavBar from "./Navbar";
 import React from "react";
 
+//Dashboard initializing authentication request
 const HomePage: React.FC = () => {
   const { isAuthenticated } = useAuth0();
 
