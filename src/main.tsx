@@ -2,8 +2,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./App.css"
 import { BrowserRouter } from "react-router-dom";
-import Auth0ProviderWithNavigate from "./components/AUth0Provider";
-import React from "react";
+import Auth0ProviderWithNavigate from "./components/Auth0Provider";
 
 
 // Sending App an Browser Router to run dev
